@@ -1,0 +1,37 @@
+model Business {
+  id           String        @id @default(cuid())
+  name         String
+  timezone     String
+  services     Service[]
+  appointments Appointment[]
+}
+
+model Service {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  name       String
+  duration   Int
+  price      Float
+}
+
+model Appointment {
+  id            String   @id @default(cuid())
+  businessId    String
+  serviceId     String
+  customerName  String
+  customerEmail String
+  startTime     DateTime
+  endTime       DateTime
+  status        String
+  business      Business @relation(fields: [businessId], references: [id])
+}
+
+model User {
+    id          String      @id @default(cuid())
+    email       String      @unique
+    password    String  
+    name        String?
+    role        String      @default("admin") //optional
+    createdAt   DateTime    @default(now())
+}
